@@ -1,0 +1,9 @@
+[submodule "tao"]
+	path = tao
+	url = git://github.com/developmentseed/tao.git
+[submodule "sites/all/themes/tao"]
+	path = sites/all/themes/tao
+	url = git://github.com/developmentseed/tao.git
+[submodule "sites/all/themes/rubik"]
+	path = sites/all/themes/rubik
+	url = git://github.com/developmentseed/rubik.git
