@@ -1,0 +1,5 @@
+; $Id$
+name = Mailfish
+description = The more dinwitted version of MailChimp
+core = 6.x
+version = 6.x-0.1-dev
