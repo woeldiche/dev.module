@@ -3,3 +3,17 @@
  * @file
  *   The dimwitted version of MailChimp. Provides a simple mail tracking system.
  */
+ 
+/**
+ * Implementation of hook_menu().
+ */
+function mailfish_menu() {
+  $items['admin/settings/mailfish'] = array(
+    'title' => 'Mailfish Settings',
+    'description' => 'Administer Mailfish Settings',
+    'page callback' => 'mailfish_admin_callback',
+    'access arguments' => array('manage mailfish settings'),
+    'file' => 'mailfish.admin.inc',
+  );
+  return $items;
+}
