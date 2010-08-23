@@ -11,9 +11,55 @@ function mailfish_menu() {
   $items['admin/settings/mailfish'] = array(
     'title' => 'Mailfish Settings',
     'description' => 'Administer Mailfish Settings',
-    'page callback' => 'mailfish_admin_callback',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mailfish_settings_form'),
     'access arguments' => array('manage mailfish settings'),
     'file' => 'mailfish.admin.inc',
   );
+  $items['admin/reports/mailfish'] = array(
+    'title' => 'Mailfish Signups',
+    'description' => 'View Mailfish signups',
+    'page callback' => 'mailfish_signups',
+    'access arguments' => array('view mailfish subscriptions'),
+    'file' => 'mailfish.admin.inc',
+  );
   return $items;
+}
+
+/**
+ * Implementation of hook_perm.
+ */
+function mailfish_perm() {
+  $perm = array(
+    'view mailfish subscriptions',
+    'create mailfish subscriptions',
+    'manage mailfish settings',
+  );
+  return $perm;
+}
+
+
+/**
+ * Implementation of hook_form_alter.
+ */
+function mailfish_form_alter (&$form, &$form_state, $form_id) {
+  if (isset($form['type']) && isset($form['#node']) && $form['type']['#value'] .'_node_form' == $form_id) {
+    $types = variable_get('mailfish_types', array());
+    // Check if this node type is enabled for mailfish
+    // and that the user has access to the per-node settings.
+    if ($types[$form['type']['#value']] && user_access('manage mailfish settings')) {
+      // Add a new fieldset with a checkbox for per-node mailfish setting.
+      $form['mailfish'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Mailfish'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['mailfish']['mailfish_enabled'] = array(
+        '#title' => t('Collect e-mail addresses for this node.'),
+        '#type' => 'checkbox',
+        '#default_value' => $form['#node']->mailfish,
+      );
+    }
+  }
 }
